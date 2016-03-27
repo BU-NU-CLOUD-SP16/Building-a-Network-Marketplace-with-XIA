@@ -20,6 +20,8 @@
 #ifndef _UAPI__LINUX_OPENVSWITCH_H
 #define _UAPI__LINUX_OPENVSWITCH_H 1
 
+#include <net/xia.h>
+#include <net/xia_route.h>
 #include <linux/types.h>
 #include <linux/if_ether.h>
 
@@ -407,6 +409,18 @@ struct ovs_key_ipv6 {
 
 struct ovs_key_xia {
 	__u8   xia_version;
+	__u8   xia_nhdr;
+	__be16   xia_payload_len;
+	__u8   xia_hop_limit;
+	__u8   xia_num_dst;
+	__u8   xia_num_src;
+	__u8   xia_last_node;
+
+	struct xia_row xia_dst_node;
+	struct xia_row xia_dst_edge0;
+	struct xia_row xia_dst_edge1;
+	struct xia_row xia_dst_edge2;
+	struct xia_row xia_dst_edge3;
 };
 
 struct ovs_key_tcp {

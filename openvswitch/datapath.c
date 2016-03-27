@@ -265,8 +265,9 @@ void ovs_dp_process_packet(struct sk_buff *skb, struct sw_flow_key *key)
 
 	stats = this_cpu_ptr(dp->stats_percpu);
 
-	if (key->eth.type == htons(ETH_P_XIP)) 
-		pr_info("Process an XIP packet with xia_version=%d\n", key->xip.xia_version);
+	if (key->eth.type == htons(ETH_P_XIP)) {
+		pr_info("Process an XIP packet with xia_version=%d, last_node=%d\n", key->xip.xia_version, key->xip.xia_last_node);
+	}
 
 	/* Look up flow. */
 	flow = ovs_flow_tbl_lookup_stats(&dp->table, key, &n_mask_hit);
@@ -293,6 +294,12 @@ void ovs_dp_process_packet(struct sk_buff *skb, struct sw_flow_key *key)
 		if (key->eth.type == htons(ETH_P_XIP)) {
 			pr_info("Flow Found!\n");
 			pr_info("\txia_version=%d!\n", flow->key.xip.xia_version);
+			pr_info("\txia_nhdr=%d!\n", flow->key.xip.xia_nhdr);
+			pr_info("\txia_payload_len=%d!\n", be16_to_cpu(flow->key.xip.xia_payload_len));
+			pr_info("\txia_hop_limit=%d!\n", flow->key.xip.xia_hop_limit);
+			pr_info("\txia_num_dst=%d!\n", flow->key.xip.xia_num_dst);
+			pr_info("\txia_num_src=%d!\n", flow->key.xip.xia_num_src);
+			pr_info("\txia_last_node=%d!\n", flow->key.xip.xia_last_node);
 		}
 	}
 

@@ -122,6 +122,19 @@ struct sw_flow_key {
 
 	struct {
 		u8 xia_version;
+		u8 xia_nhdr;
+		__be16   xia_payload_len;
+		u8   xia_hop_limit;
+		u8   xia_num_dst;
+		u8   xia_num_src;
+		u8   xia_last_node;
+		
+		/* node + 4 outgoing edges */
+		struct xia_row xia_dst_node; 
+		struct xia_row xia_dst_edge0; 
+		struct xia_row xia_dst_edge1; 
+		struct xia_row xia_dst_edge2; 
+		struct xia_row xia_dst_edge3; 
 	} xip;
 
 } __aligned(BITS_PER_LONG/8); /* Ensure that we can do comparisons as longs. */
@@ -215,19 +228,19 @@ static inline bool ovs_identifier_is_key(const struct sw_flow_id *sfid)
 }
 
 void ovs_flow_stats_update(struct sw_flow *, __be16 tcp_flags,
-			   const struct sk_buff *);
+		const struct sk_buff *);
 void ovs_flow_stats_get(const struct sw_flow *, struct ovs_flow_stats *,
-			unsigned long *used, __be16 *tcp_flags);
+		unsigned long *used, __be16 *tcp_flags);
 void ovs_flow_stats_clear(struct sw_flow *);
 u64 ovs_flow_used_time(unsigned long flow_jiffies);
 
 int ovs_flow_key_update(struct sk_buff *skb, struct sw_flow_key *key);
 int ovs_flow_key_extract(const struct ip_tunnel_info *tun_info,
-			 struct sk_buff *skb,
-			 struct sw_flow_key *key);
+		struct sk_buff *skb,
+		struct sw_flow_key *key);
 /* Extract key from packet coming from userspace. */
 int ovs_flow_key_extract_userspace(struct net *net, const struct nlattr *attr,
-				   struct sk_buff *skb,
-				   struct sw_flow_key *key, bool log);
+		struct sk_buff *skb,
+		struct sw_flow_key *key, bool log);
 
 #endif /* flow.h */

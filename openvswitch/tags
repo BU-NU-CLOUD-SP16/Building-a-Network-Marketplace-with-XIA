@@ -14,9 +14,9 @@ DP_VPORT_HASH_BUCKETS	datapath.h	35;"	d
 FLOW_H	flow.h	20;"	d
 FLOW_NETLINK_H	flow_netlink.h	21;"	d
 FLOW_TABLE_H	flow_table.h	20;"	d
-MAX_ACTIONS_BUFSIZE	flow_netlink.c	1673;"	d	file:
+MAX_ACTIONS_BUFSIZE	flow_netlink.c	1762;"	d	file:
 MAX_L2_LEN	actions.c	59;"	d	file:
-MAX_UFID_LENGTH	flow.h	144;"	d
+MAX_UFID_LENGTH	flow.h	161;"	d
 OVS_ATTR_NESTED	flow_netlink.c	59;"	d	file:
 OVS_ATTR_VARIABLE	flow_netlink.c	60;"	d	file:
 OVS_CB	datapath.h	105;"	d
@@ -32,7 +32,7 @@ SW_FLOW_KEY_MEMCPY_OFFSET	flow_netlink.c	97;"	d	file:
 SW_FLOW_KEY_MEMSET_FIELD	flow_netlink.c	111;"	d	file:
 SW_FLOW_KEY_PUT	flow_netlink.c	87;"	d	file:
 TBL_MIN_BUCKETS	flow_table.c	48;"	d	file:
-TCP_FLAGS_BE16	flow.c	68;"	d	file:
+TCP_FLAGS_BE16	flow.c	72;"	d	file:
 TUN_METADATA_OFFSET	flow.h	44;"	d
 TUN_METADATA_OPTS	flow.h	46;"	d
 VPORT_ALIGN	vport.h	154;"	d
@@ -171,7 +171,7 @@ flow_mask_remove	flow_table.c	/^static void flow_mask_remove(struct flow_table *
 flow_policy	datapath.c	/^static const struct nla_policy flow_policy[OVS_FLOW_ATTR_MAX + 1] = {$/;"	v	typeref:struct:nla_policy	file:
 flow_policy	datapath.c	/^static const struct nla_policy flow_policy[];$/;"	v	typeref:struct:nla_policy	file:
 flow_stats	flow.h	/^struct flow_stats {$/;"	s
-flow_table	flow.h	/^	} flow_table, ufid_table;$/;"	m	struct:sw_flow	typeref:struct:sw_flow::__anon16
+flow_table	flow.h	/^	} flow_table, ufid_table;$/;"	m	struct:sw_flow	typeref:struct:sw_flow::__anon17
 flow_table	flow_table.h	/^struct flow_table {$/;"	s
 flow_table_copy_flows	flow_table.c	/^static void flow_table_copy_flows(struct table_instance *old,$/;"	f	file:
 flow_tbl_destroy_rcu_cb	flow_table.c	/^static void flow_tbl_destroy_rcu_cb(struct rcu_head *rcu)$/;"	f	file:
@@ -197,7 +197,7 @@ get_ufid_len	flow_netlink.c	/^static size_t get_ufid_len(const struct nlattr *at
 gre_create	vport-gre.c	/^static struct vport *gre_create(const struct vport_parms *parms)$/;"	f	file:
 gre_tnl_create	vport-gre.c	/^static struct vport *gre_tnl_create(const struct vport_parms *parms)$/;"	f	file:
 handle_fragments	conntrack.c	/^static int handle_fragments(struct net *net, struct sw_flow_key *key,$/;"	f	file:
-hash	flow.h	/^		u32 hash;$/;"	m	struct:sw_flow::__anon16
+hash	flow.h	/^		u32 hash;$/;"	m	struct:sw_flow::__anon17
 hash_bucket	vport.c	/^static struct hlist_head *hash_bucket(const struct net *net, const char *name)$/;"	f	file:
 hash_node	vport.h	/^	struct hlist_node hash_node;$/;"	m	struct:vport	typeref:struct:vport::hlist_node
 hash_seed	flow_table.h	/^	u32 hash_seed;$/;"	m	struct:table_instance
@@ -296,7 +296,7 @@ new_vport	datapath.c	/^static struct vport *new_vport(const struct vport_parms *
 next	flow_netlink.c	/^	const struct ovs_len_tbl *next;$/;"	m	struct:ovs_len_tbl	typeref:struct:ovs_len_tbl::ovs_len_tbl	file:
 nla_alloc_flow_actions	flow_netlink.c	/^static struct sw_flow_actions *nla_alloc_flow_actions(int size, bool log)$/;"	f	file:
 nlattr_set	flow_netlink.c	/^static void nlattr_set(struct nlattr *attr, u8 val,$/;"	f	file:
-node	flow.h	/^		struct hlist_node node[2];$/;"	m	struct:sw_flow::__anon16	typeref:struct:sw_flow::__anon16::hlist_node
+node	flow.h	/^		struct hlist_node node[2];$/;"	m	struct:sw_flow::__anon17	typeref:struct:sw_flow::__anon17::hlist_node
 node_ver	flow_table.h	/^	int node_ver;$/;"	m	struct:table_instance
 openvswitch-y	Makefile	/^openvswitch-y := \\$/;"	m
 ops	vport.h	/^	const struct vport_ops *ops;$/;"	m	struct:vport	typeref:struct:vport::vport_ops
@@ -635,14 +635,14 @@ type	flow.h	/^		__be16 type;		\/* Ethernet frame type. *\/$/;"	m	struct:sw_flow_
 type	vport.h	/^	enum ovs_vport_type type;$/;"	m	struct:vport_ops	typeref:enum:vport_ops::ovs_vport_type
 type	vport.h	/^	enum ovs_vport_type type;$/;"	m	struct:vport_parms	typeref:enum:vport_parms::ovs_vport_type
 udphdr_ok	flow.c	/^static bool udphdr_ok(struct sk_buff *skb)$/;"	f	file:
-ufid	flow.h	/^		u32 ufid[MAX_UFID_LENGTH \/ 4];$/;"	m	union:sw_flow_id::__anon15
+ufid	flow.h	/^		u32 ufid[MAX_UFID_LENGTH \/ 4];$/;"	m	union:sw_flow_id::__anon16
 ufid_count	flow_table.h	/^	unsigned int ufid_count;$/;"	m	struct:flow_table
 ufid_hash	flow_table.c	/^static u32 ufid_hash(const struct sw_flow_id *sfid)$/;"	f	file:
 ufid_len	flow.h	/^	u32 ufid_len;$/;"	m	struct:sw_flow_id
-ufid_table	flow.h	/^	} flow_table, ufid_table;$/;"	m	struct:sw_flow	typeref:struct:sw_flow::__anon16
+ufid_table	flow.h	/^	} flow_table, ufid_table;$/;"	m	struct:sw_flow	typeref:struct:sw_flow::__anon17
 ufid_table_instance_insert	flow_table.c	/^static void ufid_table_instance_insert(struct table_instance *ti,$/;"	f	file:
 ufid_ti	flow_table.h	/^	struct table_instance __rcu *ufid_ti;$/;"	m	struct:flow_table	typeref:struct:flow_table::__rcu
-unmasked_key	flow.h	/^		struct sw_flow_key *unmasked_key;$/;"	m	union:sw_flow_id::__anon15	typeref:struct:sw_flow_id::__anon15::sw_flow_key
+unmasked_key	flow.h	/^		struct sw_flow_key *unmasked_key;$/;"	m	union:sw_flow_id::__anon16	typeref:struct:sw_flow_id::__anon16::sw_flow_key
 upcall_msg_size	datapath.c	/^static size_t upcall_msg_size(const struct dp_upcall_info *upcall_info,$/;"	f	file:
 upcall_portids	vport.h	/^	struct nlattr *upcall_portids;$/;"	m	struct:vport_parms	typeref:struct:vport_parms::nlattr
 upcall_portids	vport.h	/^	struct vport_portids __rcu *upcall_portids;$/;"	m	struct:vport	typeref:struct:vport::__rcu
@@ -679,6 +679,19 @@ vxlan_get_options	vport-vxlan.c	/^static int vxlan_get_options(const struct vpor
 vxlan_opt_to_nlattr	flow_netlink.c	/^static int vxlan_opt_to_nlattr(struct sk_buff *skb,$/;"	f	file:
 vxlan_tnl_create	vport-vxlan.c	/^static struct vport *vxlan_tnl_create(const struct vport_parms *parms)$/;"	f	file:
 vxlan_tun_opt_from_nlattr	flow_netlink.c	/^static int vxlan_tun_opt_from_nlattr(const struct nlattr *attr,$/;"	f	file:
+xia_dst_edge0	flow.h	/^		struct xia_row xia_dst_edge0; $/;"	m	struct:sw_flow_key::__anon15	typeref:struct:sw_flow_key::__anon15::xia_row
+xia_dst_edge1	flow.h	/^		struct xia_row xia_dst_edge1; $/;"	m	struct:sw_flow_key::__anon15	typeref:struct:sw_flow_key::__anon15::xia_row
+xia_dst_edge2	flow.h	/^		struct xia_row xia_dst_edge2; $/;"	m	struct:sw_flow_key::__anon15	typeref:struct:sw_flow_key::__anon15::xia_row
+xia_dst_edge3	flow.h	/^		struct xia_row xia_dst_edge3; $/;"	m	struct:sw_flow_key::__anon15	typeref:struct:sw_flow_key::__anon15::xia_row
+xia_dst_node	flow.h	/^		struct xia_row xia_dst_node; $/;"	m	struct:sw_flow_key::__anon15	typeref:struct:sw_flow_key::__anon15::xia_row
+xia_hop_limit	flow.h	/^		u8   xia_hop_limit;$/;"	m	struct:sw_flow_key::__anon15
+xia_last_node	flow.h	/^		u8   xia_last_node;$/;"	m	struct:sw_flow_key::__anon15
+xia_nhdr	flow.h	/^		u8 xia_nhdr;$/;"	m	struct:sw_flow_key::__anon15
+xia_num_dst	flow.h	/^		u8   xia_num_dst;$/;"	m	struct:sw_flow_key::__anon15
+xia_num_src	flow.h	/^		u8   xia_num_src;$/;"	m	struct:sw_flow_key::__anon15
+xia_payload_len	flow.h	/^		__be16   xia_payload_len;$/;"	m	struct:sw_flow_key::__anon15
+xia_version	flow.h	/^		u8 xia_version;$/;"	m	struct:sw_flow_key::__anon15
+xip	flow.h	/^	} xip;$/;"	m	struct:sw_flow_key	typeref:struct:sw_flow_key::__anon15
 xt_label	datapath.h	/^	bool xt_label;$/;"	m	struct:ovs_net
 zone	conntrack.c	/^	struct nf_conntrack_zone zone;$/;"	m	struct:ovs_conntrack_info	typeref:struct:ovs_conntrack_info::nf_conntrack_zone	file:
 zone	flow.h	/^		u16 zone;$/;"	m	struct:sw_flow_key::__anon14
