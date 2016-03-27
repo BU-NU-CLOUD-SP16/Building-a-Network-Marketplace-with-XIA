@@ -1010,6 +1010,17 @@ static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
 	if (likely(!flow)) {
 		rcu_assign_pointer(new_flow->sf_acts, acts);
 
+		pr_info("--------------------------NETLINK------------------------\n");
+		pr_info("Create a new flow!!!!\n");
+		pr_info("\txia_version=%d!\n", new_flow->key.xip.xia_version);
+		pr_info("\txia_nhdr=%d!\n", new_flow->key.xip.xia_nhdr);
+		pr_info("\txia_payload_len=%d!\n", be16_to_cpu(new_flow->key.xip.xia_payload_len));
+		pr_info("\txia_hop_limit=%d!\n", new_flow->key.xip.xia_hop_limit);
+		pr_info("\txia_num_dst=%d!\n", new_flow->key.xip.xia_num_dst);
+		pr_info("\txia_num_src=%d!\n", new_flow->key.xip.xia_num_src);
+		pr_info("\txia_last_node=%d!\n", new_flow->key.xip.xia_last_node);
+		pr_info("----------------------------------------------------------\n");
+
 		/* Put flow in bucket. */
 		error = ovs_flow_tbl_insert(&dp->table, new_flow, &mask);
 		if (unlikely(error)) {
