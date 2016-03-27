@@ -701,15 +701,21 @@ static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
 		struct xiphdr *xiph = xip_hdr(skb);
 		struct xia_row *last_row = xip_last_row(xiph->dst_addr, xiph->num_dst, xiph->last_node);
 
+		// for test, just extract version & last_node
 		// extract the xip version number
 		key->xip.xia_version = xiph->version;
+		
+/*
 		key->xip.xia_nhdr = xiph->next_hdr;
 		key->xip.xia_payload_len = xiph->payload_len;
 		key->xip.xia_hop_limit = xiph->hop_limit;
 		key->xip.xia_num_dst = xiph->num_dst;
 		key->xip.xia_num_src = xiph->num_src;
+*/
+		
 		key->xip.xia_last_node = xiph->last_node;
 
+/*
 		memcpy(&key->xip.xia_dst_node, last_row, sizeof(struct xia_row));
 
 		e0 = key->xip.xia_dst_node.s_edge.a[0];
@@ -732,6 +738,7 @@ static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
 		if (!is_empty_edge(e3)) {
 			memcpy(&key->xip.xia_dst_edge3, &xiph->dst_addr[3], sizeof(struct xia_row));
 		}
+*/
 
 		pr_info("*******************XIA PKT*******************\n");
 		pr_info("Catch an XIP packet\n");

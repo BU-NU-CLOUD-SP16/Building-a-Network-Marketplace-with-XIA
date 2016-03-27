@@ -266,7 +266,7 @@ void ovs_dp_process_packet(struct sk_buff *skb, struct sw_flow_key *key)
 	stats = this_cpu_ptr(dp->stats_percpu);
 
 	if (key->eth.type == htons(ETH_P_XIP)) {
-		pr_info("Process an XIP packet with xia_version=%d, last_node=%d\n", key->xip.xia_version, key->xip.xia_last_node);
+		pr_info("Process an XIP packet with xia_version=%d, last_node=%d, num_dst=%d\n", key->xip.xia_version, key->xip.xia_last_node, key->xip.xia_num_dst);
 	}
 
 	/* Look up flow. */
