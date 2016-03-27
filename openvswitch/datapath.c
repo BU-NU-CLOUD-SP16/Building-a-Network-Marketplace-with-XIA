@@ -1012,6 +1012,7 @@ static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
 
 		pr_info("--------------------------NETLINK------------------------\n");
 		pr_info("Create a new flow!!!!\n");
+		pr_info("\tdl_type=%u!\n", new_flow->key.eth.type);
 		pr_info("\txia_version=%d!\n", new_flow->key.xip.xia_version);
 		pr_info("\txia_nhdr=%d!\n", new_flow->key.xip.xia_nhdr);
 		pr_info("\txia_payload_len=%d!\n", be16_to_cpu(new_flow->key.xip.xia_payload_len));
@@ -1024,6 +1025,7 @@ static int ovs_flow_cmd_new(struct sk_buff *skb, struct genl_info *info)
 		/* Put flow in bucket. */
 		error = ovs_flow_tbl_insert(&dp->table, new_flow, &mask);
 		if (unlikely(error)) {
+			pr_info("In ovs_flow_tbl_insert(): add flow rules error!!!\n");
 			acts = NULL;
 			goto err_unlock_ovs;
 		}

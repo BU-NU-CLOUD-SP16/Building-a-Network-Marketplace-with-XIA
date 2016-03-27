@@ -1597,18 +1597,22 @@ static int __ovs_nla_put_key(const struct sw_flow_key *swkey,
 		if (!nla)
 			goto nla_put_failure;
 		xia_key = nla_data(nla);
+
 		xia_key->xia_version = output->xip.xia_version;
 		xia_key->xia_nhdr = output->xip.xia_nhdr;
 		xia_key->xia_payload_len = output->xip.xia_payload_len;
 		xia_key->xia_hop_limit = output->xip.xia_hop_limit;
 		xia_key->xia_num_dst = output->xip.xia_num_dst;
 		xia_key->xia_num_src = output->xip.xia_num_src;
+		xia_key->xia_last_node = output->xip.xia_last_node;
 		
 		memcpy(&xia_key->xia_dst_node, &output->xip.xia_dst_node, sizeof(struct xia_row));
 		memcpy(&xia_key->xia_dst_edge0, &output->xip.xia_dst_edge0, sizeof(struct xia_row));
 		memcpy(&xia_key->xia_dst_edge1, &output->xip.xia_dst_edge1, sizeof(struct xia_row));
 		memcpy(&xia_key->xia_dst_edge2, &output->xip.xia_dst_edge2, sizeof (struct xia_row));
 		memcpy(&xia_key->xia_dst_edge3, &output->xip.xia_dst_edge3, sizeof(struct xia_row));
+
+		pr_info("Build output info: xia_version=%d, xia_last_node=%d\n", xia_key->xia_version, xia_key->xia_last_node);
 
 	} else if (swkey->eth.type == htons(ETH_P_ARP) ||
 			swkey->eth.type == htons(ETH_P_RARP)) {
