@@ -1,6 +1,9 @@
 
 from mininet.topo import Topo
 from mininet.net import Mininet
+from mininet.cli import CLI
+from mininet.util import dumpNodeConnections
+
 class Network1(Topo):
 
 	def __init__(self):
@@ -15,8 +18,19 @@ class Network1(Topo):
 		self.addLink(host1,switch1)
 		self.addLink(switch1,host2)
 		self.addLink(switch1,host3)
-
+	
 
 topos = { 'network1' : (lambda: Network1() ) }
 
+def startup():
+   topo=Network1()
+   net=Mininet(topo)
+   net.start()
+   net.configLinkStatus('h2','s1','down')
+   net.configLinkStatus('h3','s1','down')
+   dumpNodeConnections(net.hosts)
+   CLI(net)
+   net.stop()
 
+if __name__=="__main__":
+   startup()

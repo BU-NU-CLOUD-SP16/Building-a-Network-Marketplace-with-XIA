@@ -23,3 +23,18 @@ class Network2(Topo):
 topos = { 'network2' : (lambda: Network2() ) }
 
 
+def startup():
+   topo=Network2()
+   net=Mininet(topo)
+   net.start()
+   net.configLinkStatus('h2','s2','down')
+   net.configLinkStatus('h2','s3','down')
+
+   dumpNodeConnections(net.hosts)
+   CLI(net)
+   net.stop()
+
+if __name__=="__main__":
+   startup()
+
+
