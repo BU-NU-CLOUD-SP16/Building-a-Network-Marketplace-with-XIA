@@ -701,17 +701,15 @@ static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
 		struct xiphdr *xiph = xip_hdr(skb);
 		struct xia_row *last_row = xip_last_row(xiph->dst_addr, xiph->num_dst, xiph->last_node);
 
-		// for test, just extract version & last_node
+		// for test, just extract all the fields except for XIDs
 		// extract the xip version number
 		key->xip.xia_version = xiph->version;
 		
-/*
 		key->xip.xia_nhdr = xiph->next_hdr;
 		key->xip.xia_payload_len = xiph->payload_len;
 		key->xip.xia_hop_limit = xiph->hop_limit;
 		key->xip.xia_num_dst = xiph->num_dst;
 		key->xip.xia_num_src = xiph->num_src;
-*/
 		
 		key->xip.xia_last_node = xiph->last_node;
 
