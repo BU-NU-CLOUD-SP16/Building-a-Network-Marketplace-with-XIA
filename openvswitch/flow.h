@@ -128,6 +128,7 @@ struct sw_flow_key {
 		u8   xia_num_dst;
 		u8   xia_num_src;
 		u8   xia_last_node;
+		u8   xia_xid0[24];
 		
 		/* node + 4 outgoing edges */
 		struct xia_row xia_dst_node; 

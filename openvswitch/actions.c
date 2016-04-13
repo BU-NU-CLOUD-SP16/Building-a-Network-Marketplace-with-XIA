@@ -433,6 +433,36 @@ static int set_ipv4(struct sk_buff *skb, struct sw_flow_key *flow_key,
 	return 0;
 }
 
+static void set_xip_ln(struct sk_buff *skb, struct xiphdr *nh, u8 new_xia_last_node,
+		       u8 mask)
+{
+	new_xia_last_node = OVS_MASKED(nh->last_node, new_xia_last_node, mask);
+
+	nh->last_node = new_xia_last_node;
+}
+
+static int set_xia(struct sk_buff *skb, struct sw_flow_key *flow_key,
+		    const struct ovs_key_xia *key,
+		    const struct ovs_key_xia *mask)
+{
+	struct xiphdr *nh;
+	int err;
+
+	nh = xip_hdr(skb);
+	
+	err = skb_ensure_writable(skb, skb_network_offset(skb) +
+				  xip_hdr_len(nh));
+	if (unlikely(err))
+		return err;
+
+	if (mask->xia_last_node) {
+		set_xip_ln(skb, nh, key->xia_last_node, mask->xia_last_node);
+		flow_key->xip.xia_last_node = nh->last_node;
+	}
+
+	return 0;
+}
+
 static bool is_ipv6_mask_nonzero(const __be32 addr[4])
 {
 	return !!(addr[0] | addr[1] | addr[2] | addr[3]);
@@ -947,6 +977,11 @@ static int execute_masked_set_action(struct sk_buff *skb,
 		break;
 	
 	// Possibly to support XIA
+	case OVS_KEY_ATTR_XIA:
+		err = set_xia(skb, flow_key, nla_data(a),
+			       get_mask(a, struct ovs_key_xia *));
+		break;
+
 
 	case OVS_KEY_ATTR_TCP:
 		err = set_tcp(skb, flow_key, nla_data(a),

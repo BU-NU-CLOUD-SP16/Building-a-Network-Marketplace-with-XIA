@@ -416,12 +416,14 @@ struct ovs_key_xia {
 	__u8   xia_num_src;
 	__u8   xia_last_node;
 
+	__u8	xia_xid0[24];
+
 	struct xia_row xia_dst_node;
 	struct xia_row xia_dst_edge0;
 	struct xia_row xia_dst_edge1;
 	struct xia_row xia_dst_edge2;
 	struct xia_row xia_dst_edge3;
-};
+}__attribute__((packed));
 
 struct ovs_key_tcp {
 	__be16 tcp_src;

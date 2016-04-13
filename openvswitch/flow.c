@@ -692,12 +692,12 @@ static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
 		
 		int i = 0;
 		int j = 0;
-
+/*
 		__u8 e0 = 0;
 		__u8 e1 = 0;
 		__u8 e2 = 0;
 		__u8 e3 = 0;
-
+*/
 		struct xiphdr *xiph = xip_hdr(skb);
 		struct xia_row *last_row = xip_last_row(xiph->dst_addr, xiph->num_dst, xiph->last_node);
 
@@ -712,6 +712,7 @@ static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
 		key->xip.xia_num_src = xiph->num_src;
 		
 		key->xip.xia_last_node = xiph->last_node;
+		memcpy(key->xip.xia_xid0, &last_row->s_xid, sizeof(last_row->s_xid));
 
 /*
 		memcpy(&key->xip.xia_dst_node, last_row, sizeof(struct xia_row));
@@ -771,6 +772,21 @@ static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
 			printk("-%08x", be32_to_cpu(xiph->dst_addr[i].s_edge.i));
 			printk("\n");
 		}
+
+		pr_info("\tThe extracted XID0 is: \n");
+		printk("\txid_type=0x");
+
+		for (j = 0; j < 4; j++) {
+			printk("%02x", key->xip.xia_xid0[j]);
+		}
+
+		printk("-");
+
+		for (j = 0; j < XIA_XID_MAX; j++) {
+			printk("%02x", key->xip.xia_xid0[j + 4]);
+		}
+		
+		printk("\n");
 
 		printk("*********************END*********************\n\n");
 	}

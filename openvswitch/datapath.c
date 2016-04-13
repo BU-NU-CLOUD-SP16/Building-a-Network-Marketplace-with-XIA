@@ -292,6 +292,7 @@ void ovs_dp_process_packet(struct sk_buff *skb, struct sw_flow_key *key)
 		goto out;
 	} else {
 		if (key->eth.type == htons(ETH_P_XIP)) {
+			int j = 0;
 			pr_info("Flow Found!\n");
 			pr_info("\txia_version=%d!\n", flow->key.xip.xia_version);
 			pr_info("\txia_nhdr=%d!\n", flow->key.xip.xia_nhdr);
@@ -300,6 +301,19 @@ void ovs_dp_process_packet(struct sk_buff *skb, struct sw_flow_key *key)
 			pr_info("\txia_num_dst=%d!\n", flow->key.xip.xia_num_dst);
 			pr_info("\txia_num_src=%d!\n", flow->key.xip.xia_num_src);
 			pr_info("\txia_last_node=%d!\n", flow->key.xip.xia_last_node);
+			
+			printk("\txid_type=0x");
+
+			for (j = 0; j < 4; j++) {
+				printk("%02x", flow->key.xip.xia_xid0[j]);
+			}
+
+			printk("-");
+
+			for (j = 0; j < XIA_XID_MAX; j++) {
+				printk("%02x", flow->key.xip.xia_xid0[j + 4]);
+			}
+
 		}
 	}
 

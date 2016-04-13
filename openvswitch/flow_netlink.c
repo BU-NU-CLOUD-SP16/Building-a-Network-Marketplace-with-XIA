@@ -1065,6 +1065,10 @@ static int ovs_key_from_nlattrs(struct net *net, struct sw_flow_match *match,
 		SW_FLOW_KEY_PUT(match, xip.xia_last_node,
 				xia_key->xia_last_node, is_mask);
 		
+		SW_FLOW_KEY_MEMCPY(match, xip.xia_xid0,
+				xia_key->xia_xid0,	
+				sizeof(__u8) * 24, is_mask);
+		
 		SW_FLOW_KEY_MEMCPY(match, xip.xia_dst_node,
 				&xia_key->xia_dst_node,	
 				sizeof(match->key->xip.xia_dst_node), is_mask);
@@ -1605,6 +1609,8 @@ static int __ovs_nla_put_key(const struct sw_flow_key *swkey,
 		xia_key->xia_num_dst = output->xip.xia_num_dst;
 		xia_key->xia_num_src = output->xip.xia_num_src;
 		xia_key->xia_last_node = output->xip.xia_last_node;
+		
+		memcpy(xia_key->xia_xid0, output->xip.xia_xid0, sizeof(__u8) * 24);
 		
 		memcpy(&xia_key->xia_dst_node, &output->xip.xia_dst_node, sizeof(struct xia_row));
 		memcpy(&xia_key->xia_dst_edge0, &output->xip.xia_dst_edge0, sizeof(struct xia_row));
