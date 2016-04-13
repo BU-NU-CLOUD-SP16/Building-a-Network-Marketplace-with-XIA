@@ -1,1 +1,0 @@
-cmd_net/openvswitch//vport-vxlan.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o net/openvswitch//vport-vxlan.ko net/openvswitch//vport-vxlan.o net/openvswitch//vport-vxlan.mod.o
