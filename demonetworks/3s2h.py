@@ -17,11 +17,11 @@ class Network2(Topo):
 		switch2 = self.addSwitch('s2')
 		switch3 = self.addSwitch('s3')
 		
-		self.addLink(host1,switch1,delay='1ms')
-		self.addLink(switch1,switch2,delay='10ms')
-		self.addLink(switch1,switch3,delay='1000ms')
-		self.addLink(switch2,host2,delay='50ms')
-		self.addLink(switch3,host2,delay='2000ms')
+		self.addLink(host1,switch1,delay='3ms')
+		self.addLink(switch1,switch2,delay='30ms')
+		self.addLink(switch1,switch3,delay='300ms')
+		self.addLink(switch2,host2,delay='30ms')
+		self.addLink(switch3,host2,delay='300ms')
 
 
 topos = { 'network2' : (lambda: Network2() ) }
