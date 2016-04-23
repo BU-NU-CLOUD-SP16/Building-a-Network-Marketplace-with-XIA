@@ -26,6 +26,14 @@ By the end of this project, participants will have gained significant experience
 
 ## Installation and Deployment
 
+### XIA Install
+```bash
+git clone https://github.com/mengxiang0811/XIA-for-Linux.git
+cd XIA-for-Linux
+make
+sudo make install
+```
+
 ### Kernel Space Install
 ```bash
 cd ~
