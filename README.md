@@ -23,3 +23,37 @@ In this project, we will create a very simple version of a networking marketplac
 OVS. We will be coding and hacking in the kernel on both virtual machines and physical computers.
 
 By the end of this project, participants will have gained significant experience in computer networking, cloud computing, Linux kernel programming, Linux and virtual machine configuration, etc.
+
+## Installation and Deployment
+
+### Kernel Space Install
+```bash
+cd ~
+sudo rmmod openvswitch
+git clone https://github.com/BU-NU-CLOUD-SP16/Building-a-Network-Marketplace-with-XIA.git
+cd Building-a-Network-Marketplace-with-XIA
+cp openvswitch.h ~/XIA-for-Linux/include/uapi/linux/
+cp -r openvswitch/ ~/XIA-for-Linux/net/
+cd ~/XIA-for-Linux/
+make clean M=net/openvswitch
+make M=net/openvswitch/
+sudo install -oroot -groot -m644 net/openvswitch/openvswitch.ko /lib/modules/`uname -r`/kernel/net/openvswitch
+sudo modprobe openvswitch
+```
+
+### User Space Install
+```bash
+cd ~
+git clone https://github.com/cjdoucette/ovs.git
+cd ovs
+make
+sudo make install
+
+```
+### Setup
+```bash
+cd ~
+sudo ./setup_ovs.sh
+sudo modprobe xia_ppal_hid
+sudo modprobe xia_ppal_xdp
+```
