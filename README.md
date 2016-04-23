@@ -53,7 +53,10 @@ sudo make install
 ### Setup
 ```bash
 cd ~
-sudo ./setup_ovs.sh
+sudo modprobe openvswitch
+sudo ovsdb-server -v --remote=punix:/usr/local/var/run/openvswitch/db.sock --remote=db:Open_vSwitch,Open_vSwitch,manager_options  --pidfile --detach --log-file
+sudo ovs-vsctl --no-wait init
+sudo ovs-vswitchd --pidfile --detach
 sudo modprobe xia_ppal_hid
 sudo modprobe xia_ppal_xdp
 ```
