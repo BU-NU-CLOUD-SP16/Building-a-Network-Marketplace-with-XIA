@@ -1,0 +1,176 @@
+Configuration
+=============
+
+1. Install VirtualBox on your computer.
+
+2. Download the VM (in an .ova file) that I've set up for you here: https://drive.google.com/open?id=0B7jkQaoVWfIaRWtGMVRONjdQSzQ
+
+3. Import the VM into VirtualBox by opening VirtualBox and selecting File>Import Appliance and navigating through the steps by selecting the .ova file that you just downloaded.
+
+4. Start the VM. The username is "ovs" and the password is "ovs". The first thing you should do is configure git for the VM, so issue the following commands with your information:
+
+    $ git config --global user.name "John Doe"
+    $ git config --global user.email johndoe@example.com
+
+You may also want to configure your choice of editor (emacs, vim, gedit, nano, etc):
+
+    $ git config --global core.editor vim
+
+5. Go into the ovs directory. I've added a file there called "names.txt" that contains our names. I want you to add your name to the list, commit and push the update to the repository. This is just a small test to make sure that you are comfortable pulling and merging code (since the other teammates will be doing the same thing). If you are unsure how to do this, just let me know.
+
+Now we're ready to start using the tools in the VM. Here's what they are and what they do:
+
+Tools
+=====
+
+1. XIA-for-Linux: The entire source code of the Linux kernel, with XIA included. This kernel has already been compiled and installed. We need this kernel to send XIA packets, and also to edit the OVS kernel code. Remember that there are two parts to the OVS code: the userspace portion and the faster, kernel datapath.
+
+2. ovs: This is the source code for OVS. I have already compiled and installed it, but this is where you will be editing the OVS userspace code and re-compiling/re-installing it.
+
+3. mininet: This is the source code for a tool called mininet, which can create a bunch of really small virtual machines that act like a network connected by switches (Open vSwitch!). Having an emulated network using mininet will allow us to run experiments and see what happens to packets. We probably won't need to use this source code, but I've left it just in case.
+
+4. wireshark: This is a tool that lets you look at the packets that traverse the network. I've removed the source code because we won't need it.
+
+5. net-echo: This is the application that will help us send XIA packets. It implements a simple server (eserv) and client (ecli), where the client sends a message and the server simply echoes it back to the client.
+
+Experiments
+===========
+
+On booting the VM, you will always need to get OVS up and running first. I've created a shell script in the home directory that you should run whenever the VM is started:
+
+    $ sudo ./setup_ovs.sh
+
+1. The first experiment is to setup a network using mininet and observe what happens to packets when we try to send them between two machines in the network.
+
+First, open a terminal (1) and start wireshark from the command line:
+
+    $ sudo wireshark
+
+When it opens, double-click on Loopback: lo. This will make wireshark start capturing (and displaying) all packets that are flowing through the VM. To capture only the OpenFlow packets that we're interested in, type "openflow_v1" into the display filter near the top of the wireshark screen.
+
+Next, in a different terminal (2), create a network using mininet:
+
+    $ sudo mn
+
+This creates a really simple network with one switch connected to two hosts:
+
+h1 <-----> s1 <-----> h2
+
+Mininet is actually capable of creating some really complex and interesting networks, but this is all we need for now. If you look in Wireshark, you should see some echo requests and replies that aren't really doing much.
+
+From here, we can see what kind of rules are installed on the switch connecting these two hosts. In a third terminal (beside the one running wireshark and the one running mininet), do this:
+
+    $ sudo ovs-ofctl dump-flows s1
+
+You should see something like "NXST_FLOW reply (xid=0x4):" and not much else, meaning there are currently no flows.
+
+Now let's see what happens in Wireshark when we allow the hosts to communicate:
+
+    mininet> h1 ping h2
+
+You should see some successful pings between the two hosts. Press control + C to stop the ping. Go look in Wireshark, and you should now see some packet in, packet out, and flow modification events happening as the two hosts, switch, and controller communicate. What every packet means isn't that important right now (and honestly, it's hard to tell).
+
+But now we can check what kind of flows are installed by again doing:
+
+    $ sudo ovs-ofctl dump-flows s1
+
+This time, you should see more flows that match on things like what port the packet arrives on (in_port), what type of packet it is (arp, icmp), the src and destination IP addresses, and the action with what to do with the packet. For example, "actions=output:1" means to output the packet on port 1.
+
+Go back to mininet and close it down to end this experiment; same with wireshark.
+
+    mininet> quit
+
+2. In this experiment, we're going to do the same thing as we did before, but this time we're going to install a rule into the switch *first* that drops all packets coming from host 1.
+
+So again start wireshark in one terminal, and setup the capture options like we did before:
+
+    $ sudo wireshark
+
+Then create a mininet network in another terminal:
+
+    $ sudo mn
+
+Then dump the flows to observe that there are none:
+
+    $ sudo ovs-ofctl dump-flows s1
+
+Now this time, add a rule to switch 1 that says to drop any packet coming in on port 1 (from host 1):
+
+    $ sudo ovs-ofctl add-flow s1 in_port=1,actions=drop
+
+Now dump the flows again to see the rule:
+
+    $ sudo ovs-ofctl dump-flows s1
+
+Now let's do some pings and see what happens:
+
+    mininet> h1 ping h2
+
+The pings will be denied! You can again now close wireshark and quit mininet to finish this experiment.
+
+3. In this experiment, we are going to try sending XIA packets through the mininet network. In order to do this, we'll first need to see how to generate XIA packets.
+
+XIA comes in a series of kernel modules. Each kernel module represents an XIA principal. We're going to use two principals: the HID principal to allow XIA packets to be routed to a different host, and the XDP principal to allow packets to be delivered to sockets for applications. (XDP is XIA's version of the UDP protocol).
+
+Open a terminal on the VM and add the modules this way:
+
+    $ sudo modprobe xia_ppal_hid
+    $ sudo modprobe xia_ppal_xdp
+
+You can check that the modules were loaded by running:
+
+    $ dmesg
+
+This displays the kernel ring buffer, which shows the user important information coming from the kernel.
+
+Since all of the mininet hosts share the same kernel and filesystem as the host VM that we're using, by loading these modules on the host VM, they are automatically loaded on every mininet host.
+
+I've already generated HIDs for both of these hosts. I wanted to do this first to make sure that the HIDs are the same for everyone, so I *already* ran (you don't need to):
+
+    mininet> h1 xip hid new hid_h1   // create a new HID for h1
+    mininet> h2 xip hid new hid_h2   // create a new HID for h2
+
+All you need to do is assign these already-generated HIDs to the hosts. This is kind of like assigning an IP address to a machine. In the mininet prompt, issue these commands:
+
+    mininet> h1 xip hid add hid_h1   // assign it to host h1
+    mininet> h2 xip hid add hid_h2   // assign it to host h2
+
+You can check that each host was assigned an HID by running:
+
+    mininet> h1 xip hid showaddrs
+    mininet> h2 xip hid showaddrs
+
+When you add HIDs to machines on the same network, the machines run a protocol called NWP to find each other and communicate. So, at this point, h1 and h2 will actually have figured out they are neighbors. At h1, you can list its neighbors, and you should see information about h2:
+
+    mininet> h1 xip hid showneighs
+
+In fact, if you now dump the flows, you should see that flows have been automatically learned by the controller and installed in the switch, based on the type of the packets. You should see something like "dl_type=0xc0df" in the flow, which is the identifier for the NWP protocol:
+
+    $ sudo ovs-ofctl dump-flows s1
+
+These NWP packets work fine because they are simply flooding the mininet network and seeing who replies. Once a reply comes in, the controller can recognize it and install rules. But let's see if XIP packets will work...
+
+To send an XIP packet from h1 to h2, we need to use a new application called net-echo (ping only works for IP). When we run an XIA application, it needs to use XIA addresses, just like an IP application needs to use IP addresses. But in this case, where do we get the XIA addresses from -- how do we come up with the DAG?
+
+Well, I've already done it for you. The address of the server is in /home/ovs/server.txt, and the address of the client is in /home/ovs/client.txt. You can look at them if you want -- they contain the HIDs that you just added to the hosts, as well as identifiers for the sockets (XDPs).
+
+So, all you need to do is run the server on h2 with these files. We'll run it in the background using the "&" sign, to free up the mininet command prompt to then run the client:
+
+    mininet> h2 eserv datagram xip server.txt &
+
+Then you can run the client on h1:
+
+    mininet> h1 ecli datagram xip client.txt server.txt
+
+The client will remain open, waiting for you to input text. So type "hello" and press enter. The message should be echoed back!
+
+Now go and check the flow tables to see what was installed:
+
+    $ sudo ovs-ofctl dump-flows s1
+
+You should now see flows with dl_type=0xc0de, which is the identifier for XIP packets. OVS is smart enough to "punt" packets it does not recognize to the controller, which also does not know what to do with them. So the controller will ask the switch to just flood the packets on the network -- out of every port. Of course, there's a server (eserv) listening on one of those ports, so it will respond. OVS is smart enough to recognize that it should send packets there, so it adds that flow.
+
+So this is great! And it looks like OVS already supports XIA. Right? Well, kind of. It's smart enough to simply forward XIA packets by sending them everywhere and seeing who responds, but 1) we may not want these packets to be sent everywhere (for privacy reasons), or (2) we may want to redirect them other ways (for policy for performance reasons), or (3) we may want to drop them (for security reasons). So we need to enable OVS to actually look *inside* the XIA packet and make some decisions about it.
+
+That's all for now -- you can close down mininet and wireshark, if you have it running.
+
