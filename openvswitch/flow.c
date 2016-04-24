@@ -692,12 +692,12 @@ static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
 		
 		int i = 0;
 		int j = 0;
-/*
+		
 		__u8 e0 = 0;
 		__u8 e1 = 0;
 		__u8 e2 = 0;
 		__u8 e3 = 0;
-*/
+		
 		struct xiphdr *xiph = xip_hdr(skb);
 		struct xia_row *last_row = xip_last_row(xiph->dst_addr, xiph->num_dst, xiph->last_node);
 
@@ -713,6 +713,27 @@ static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
 		
 		key->xip.xia_last_node = xiph->last_node;
 		memcpy(key->xip.xia_xid0, &last_row->s_xid, sizeof(last_row->s_xid));
+
+		e0 = last_row->s_edge.a[0];
+		e1 = last_row->s_edge.a[1];
+		e2 = last_row->s_edge.a[2];
+		e3 = last_row->s_edge.a[3];
+
+		if (!is_empty_edge(e0)) {
+			memcpy(&key->xip.xia_edge0, &xiph->dst_addr[e0], sizeof(last_row->s_xid));
+		}
+
+		if (!is_empty_edge(e1)) {
+			memcpy(&key->xip.xia_edge1, &xiph->dst_addr[e1], sizeof(last_row->s_xid));
+		}
+
+		if (!is_empty_edge(e2)) {
+			memcpy(&key->xip.xia_edge2, &xiph->dst_addr[e2], sizeof(last_row->s_xid));
+		}
+
+		if (!is_empty_edge(e3)) {
+			memcpy(&key->xip.xia_edge3, &xiph->dst_addr[e3], sizeof(last_row->s_xid));
+		}
 
 /*
 		memcpy(&key->xip.xia_dst_node, last_row, sizeof(struct xia_row));

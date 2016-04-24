@@ -1069,6 +1069,22 @@ static int ovs_key_from_nlattrs(struct net *net, struct sw_flow_match *match,
 				xia_key->xia_xid0,	
 				sizeof(__u8) * 24, is_mask);
 		
+		SW_FLOW_KEY_MEMCPY(match, xip.xia_edge0,
+				xia_key->xia_edge0,	
+				sizeof(__u8) * 24, is_mask);
+		
+		SW_FLOW_KEY_MEMCPY(match, xip.xia_edge1,
+				xia_key->xia_edge1,	
+				sizeof(__u8) * 24, is_mask);
+		
+		SW_FLOW_KEY_MEMCPY(match, xip.xia_edge2,
+				xia_key->xia_edge2,	
+				sizeof(__u8) * 24, is_mask);
+		
+		SW_FLOW_KEY_MEMCPY(match, xip.xia_edge3,
+				xia_key->xia_edge3,	
+				sizeof(__u8) * 24, is_mask);
+		
 		SW_FLOW_KEY_MEMCPY(match, xip.xia_dst_node,
 				&xia_key->xia_dst_node,	
 				sizeof(match->key->xip.xia_dst_node), is_mask);
@@ -1611,6 +1627,10 @@ static int __ovs_nla_put_key(const struct sw_flow_key *swkey,
 		xia_key->xia_last_node = output->xip.xia_last_node;
 		
 		memcpy(xia_key->xia_xid0, output->xip.xia_xid0, sizeof(__u8) * 24);
+		memcpy(xia_key->xia_edge0, output->xip.xia_edge0, sizeof(__u8) * 24);
+		memcpy(xia_key->xia_edge1, output->xip.xia_edge1, sizeof(__u8) * 24);
+		memcpy(xia_key->xia_edge2, output->xip.xia_edge2, sizeof(__u8) * 24);
+		memcpy(xia_key->xia_edge3, output->xip.xia_edge3, sizeof(__u8) * 24);
 		
 		memcpy(&xia_key->xia_dst_node, &output->xip.xia_dst_node, sizeof(struct xia_row));
 		memcpy(&xia_key->xia_dst_edge0, &output->xip.xia_dst_edge0, sizeof(struct xia_row));
