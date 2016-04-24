@@ -30,6 +30,10 @@ topos = { 'network2' : (lambda: Network2() ) }
 def startup():
    topo=Network2()
    net=Mininet(topo,link=TCLink)
+   h2 = net.get('h2')
+   h2.cmd('ifconfig h2-eth1 10.0.0.3 netmask 255.0.0.0')
+   h2.cmd('ifconfig h2-eth0 hw ether 82:97:e4:8e:ce:75')
+   h2.cmd('ifconfig h2-eth1 hw ether ca:60:db:0e:c7:a8')
    net.start()
    dumpNodeConnections(net.hosts)
    CLI(net)
