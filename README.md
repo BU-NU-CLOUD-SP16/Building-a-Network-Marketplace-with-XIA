@@ -25,6 +25,22 @@ By the end of this project, participants will have gained significant experience
 
 ## Scope and Features Of The Project
 
+* Expand XIA in the Linux Kernel
+  * Add additional features and functionality to the existing XIA code
+  * Enable choice in a data center
+    * Users can choose computational and storage resources from service providers in a marketplace, and can choose networking services by various vendors as well.
+    * We may reuse the existing features and functionality in current XIA code.
+* Port XIA to a virtual network switch software (OVS)
+  * Read through pre-written XIA code to determine how it works.
+  * Read through OVS code to understand how IP, HTTP, etc. are ported in order to add the necessary code and headers to port XIA as well.
+  * Revise code in order to port XIA into OVS to enable a router or switch to recognize XIA much like it recognized protocols like TCP or IP.
+    * XIA can act as a transport layer, network layer, and link layer protocol. In this project, we're going to be using it as a link layer protocol that switches packets based on identifiers for links. Once XIA is in place in OVS, then the other functionality it employs (OpenFlow) will work "with" XIA.
+    * We need to extend OVS to support the XIP header, so that XIA can work in the data center environment.
+    * Also, we need to modify and expand XIA to fit within the constraints of OVS.
+
+* Creating an Application that utilizes XIA on OVS
+  * Develop an application using XIA that displays the features and functionality of the architecture.
+
 ## Solution Concept
 
 ## Acceptance criteria
