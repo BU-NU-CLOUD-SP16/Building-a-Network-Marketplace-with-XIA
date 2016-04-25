@@ -47,7 +47,7 @@ cd XIA-for-Linux
 sudo make
 sudo make install
 ```
-For more detailed installation, please refer to the Linux XIA wiki here: https://github.com/AltraMayor/XIA-for-Linux/wiki/How-to-install.
+For more detailed installation, please refer to the [Linux XIA wiki](https://github.com/AltraMayor/XIA-for-Linux/wiki/How-to-install).
 ### OVS Kernel Space Install
 ```bash
 cd ~
@@ -96,5 +96,5 @@ sudo make install
 
 For the installation of Mininet, please refer to its [official website](http://mininet.org/download/).
 
-### Wireshark-XIA
-[Wireshark](https://www.wireshark.org/) is a network protocol analyzer that allows users to inspect packet data. It provides a GUI through which users can view conveniently-formatted packet information broken down by protocol. It can be tedious to try to debug Linux XIA based on raw packet bytes. Instead, users can view XIP packets using the [Wireshark with XIA support](https://github.com/AltraMayor/XIA-for-Linux/wiki/Debugging-the-Linux-kernel#Wireshark_with_XIA_support).
+### Wireshark-XIA Install
+[Wireshark](https://www.wireshark.org/) is a network protocol analyzer that allows users to inspect packet data. It provides a GUI through which users can view conveniently-formatted packet information broken down by protocol. Users can view XIP packets using the [Wireshark with XIA support](https://github.com/AltraMayor/XIA-for-Linux/wiki/Debugging-the-Linux-kernel#Wireshark_with_XIA_support).
