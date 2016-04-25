@@ -35,7 +35,7 @@ sudo make
 sudo make install
 ```
 For more detailed installation, please refer to the Linux XIA wiki here https://github.com/AltraMayor/XIA-for-Linux/wiki/How-to-install.
-### Kernel Space Install
+### OVS Kernel Space Install
 ```bash
 cd ~
 sudo rmmod openvswitch
@@ -50,7 +50,7 @@ sudo install -oroot -groot -m644 net/openvswitch/openvswitch.ko /lib/modules/`un
 sudo modprobe openvswitch
 ```
 
-### User Space Install
+### OVS User Space Install
 ```bash
 cd ~
 git clone https://github.com/cjdoucette/ovs.git
@@ -59,7 +59,7 @@ sudo make
 sudo make install
 
 ```
-### Setup
+### OVS Setup
 ```bash
 cd ~
 sudo modprobe openvswitch
@@ -69,3 +69,16 @@ sudo ovs-vswitchd --pidfile --detach
 sudo modprobe xia_ppal_hid
 sudo modprobe xia_ppal_xdp
 ```
+
+### Extended Net-echo Application Install
+```bash
+cd ~
+git clone https://github.com/mengxiang0811/net-echo.git
+cd net-echo
+sudo make
+sudo make install
+```
+
+### Mininet Install
+
+For the installation of Mininet, please refer to the official website: http://mininet.org/download/
