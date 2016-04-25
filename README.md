@@ -14,7 +14,7 @@ Mentor: Cody Doucette doucette@bu.edu
 
 ## Project Description
 
-The [eXpressive Internet Architecture (XIA)](https://github.com/AltraMayor/XIA-for-Linux/wiki) is an experimental network architecture developed by researchers at BU at other collaborating universities. It is an alternative to the current TCP/IP-based Internet, and emphasizes that applications should be able to more clearly express their needs to the network. For example, the current Internet forces applications to say "find where this movie is, and then go retrieve it at that location." XIA allows applications to more simply say "retrieve this movie," without caring about where the movie is stored.
+The [eXpressive Internet Architecture (XIA)](https://www.cs.cmu.edu/~xia/) is an experimental network architecture developed by researchers at BU at other collaborating universities. It is an alternative to the current TCP/IP-based Internet, and emphasizes that applications should be able to more clearly express their needs to the network. For example, the current Internet forces applications to say "find where this movie is, and then go retrieve it at that location." XIA allows applications to more simply say "retrieve this movie," without caring about where the movie is stored.
 
 In other words, XIA enables applications to more accurately express their intent. This project focuses on applying this powerful tool to allow users and applications to choose better network services, especially in open cloud environments like the [Massachusetts Open Cloud (MOC)](http://www.bu.edu/cci/files/2012/11/MOC.pdf). In the same way that users can choose compute and storage resources from service providers in a marketplace, we envision that users should be able to choose networking services by various vendors as well.
 
@@ -52,7 +52,7 @@ We have compiled a video explanation and demonstration of our project.
 
 ## Where Are Projects Maintained
 ### XIA
-The [eXpressive Internet Architecture (XIA)](https://github.com/AltraMayor/XIA-for-Linux/wiki) is an experimental network architecture aimed at allowing applications and users to more accurately express their intent. Linux XIA is a native implementation of XIA in the Linux kernel. The project website is [here](https://github.com/AltraMayor/XIA-for-Linux/wiki).
+The [eXpressive Internet Architecture (XIA)](https://github.com/AltraMayor/XIA-for-Linux/wiki) is an experimental network architecture aimed at allowing applications and users to more accurately express their intent. [Linux XIA](https://github.com/AltraMayor/XIA-for-Linux/wiki) is a native implementation of XIA in the Linux kernel.
 
 ### Open vSwitch
 Open vSwitch is a virtual multilayer network switch, it has two important components: (1) ovs-vswitchd, a userspace daemon that is essentially the same from one operating system and operating environment to another. (2) datapath kernel module, is usually written specially for the host operating system for performance. For more information, you can read the NSDI'15 paper ["The Design and Implementation of Open vSwitch"](http://openvswitch.org/support/papers/nsdi2015.pdf).
