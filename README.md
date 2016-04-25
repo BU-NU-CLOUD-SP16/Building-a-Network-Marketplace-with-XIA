@@ -28,12 +28,13 @@ By the end of this project, participants will have gained significant experience
 
 ### XIA Install
 ```bash
+cd ~
 git clone https://github.com/mengxiang0811/XIA-for-Linux.git
 cd XIA-for-Linux
-make
+sudo make
 sudo make install
 ```
-
+For more detailed installation, please refer to the Linux XIA wiki here https://github.com/AltraMayor/XIA-for-Linux/wiki/How-to-install.
 ### Kernel Space Install
 ```bash
 cd ~
@@ -54,7 +55,7 @@ sudo modprobe openvswitch
 cd ~
 git clone https://github.com/cjdoucette/ovs.git
 cd ovs
-make
+sudo make
 sudo make install
 
 ```
