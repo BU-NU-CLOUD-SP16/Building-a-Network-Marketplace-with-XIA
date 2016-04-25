@@ -43,12 +43,64 @@ By the end of this project, participants will have gained significant experience
 
 ## Solution Concept
 
+### Global Architectural Structure Of the Project
+Below is a description of the system components that are the building blocks of the architectural design:
+* XIA: an experimental network architecture created as an alternative to TCP/IP under the premise that applications should be able to more clearly express their needs to the network rather than specifying the location of where to get it from.
+* OVS: a virtual multilayer network switch (Open vSwitch)
+
+![alt tag](https://github.com/BU-NU-CLOUD-SP16/Building-a-Network-Marketplace-with-XIA/blob/master/img/ovs-xia.png)
+
+The above figure shows the basic elements in the XIA enabled network. Assuming that both host A and host B are XIA enabled hosts, and A wants to communicate with B via a router/switch with OVS support. Like TCP/IP, the router/switch on the path from A to B needs to understand XIA, otherwise, the packets from A to B cannot be forwarded correctly, or will even be dropped. This highlights one important task in our project, i.e., porting XIA into OVS and making XIA understandable to the network.
+
+![alt tag](https://github.com/BU-NU-CLOUD-SP16/Building-a-Network-Marketplace-with-XIA/blob/master/img/moc-xia.png)
+
+This figure shows the MOC-XIA architecture, in which all the hosts, routers, switches, etc., are XIA enabled, i.e., this is an XIA enabled cloud. In the cloud, it enables networking as a marketplace, so that users can choose better networking services from different providers to meet their desired requirements. For instance, the user may require a networking service provider that can meet their requirements of a low latency and low jitter networking service.
+
+### Design Implications and Discussion
+
+* Using XIA for better expressiveness: XIA enables applications to more accurately express their intent. For instance, the current Internet forces applications to say "find where this movie is, and then go retrieve it at that location." XIA allows applications to more simply say "retrieve this movie," without caring about where the movie is stored.
+* Using OVS for multi-server virtualization deployments in data centers: Open vSwitch (OVS) is a production quality, multilayer virtual switch, and enables automated and dynamic network control in large-scale Linux-based virtualization environments through programmatic extension. OVS enables the network to support XIA for creating a networking marketplace.
+* Creating a networking marketplace: XIA enabled cloud allows users to choose networking services by various vendors in the same way that users choose compute and storage resources from service providers in a marketplace. This meets the users’ and applications’ need for better networking service.
+
 ## Acceptance criteria
+Minimum acceptance criteria is a working implementation of XIA on OVS.
+Stretch goals are:
+* Develop new functionality for XIA to build a network marketplace.
+* Build an application that utilizes XIA on OVS, and demonstrate its advantages.
 
 ## Release Planning
+Release #1 (due by Tuesday Feb 9):
+* Learn about the networking concepts, such as the Internet, XIA, Open vSwitch.
+ * Basic Internet
+  * A quick overview of [how the Internet works](https://www.youtube.com/watch?v=oj7A2YDgIWE)
+ * Open vSwitch
+  * Brief overivew of [Open vSwitch](https://en.wikipedia.org/wiki/Open_vSwitch).
+  * [Detailed of Open vSwitch](https://www.usenix.org/system/files/conference/nsdi15/nsdi15-paper-pfaff.pdf) (try reading sections 1-3).
+  * A [video](https://www.usenix.org/conference/nsdi15/technical-sessions/presentation/pfaff) that complements the above paper.
+  * The [official website](http://openvswitch.org/).
+* XIA
+ * The [home page](https://github.com/AltraMayor/XIA-for-Linux/wiki) of one of the projects we'll be working on: the instantiation of XIA in the Linux kernel.
+ * A (somewhat technical) [overview of XIA](https://github.com/AltraMayor/XIA-for-Linux/wiki/XIA-101).
+ * A (somewhat theoretical) [overview of XIA](https://www.cs.cmu.edu/~xia/resources/Documents/XIA-nsdi.pdf).
+ * A [video](https://www.usenix.org/conference/nsdi12/technical-sessions/presentation/han_dongsu_xia) that complements the above paper.
+
+Release #2 (due by Tuesday Feb 23):
+* Setup the developement environment, and show how to run XIA and OVS.
+
+Release #3 (due by Tuesday March 15):
+* Port XIA into OVS.
+
+Release #4 (due by Tuesday March 29):
+* Port XIA into OVS, release a demo to show XIA works in OVS.
+
+Release #5 (due by Tuesday April 12):
+* Write new functionality in XIA to enable choice in a datacenter.
+
+Release #6 (final demo due by Tuesday April 26):
+* Build an application on top of XIA and OVS, to allow users to choose network services for better performance.
 
 ## Project Video
-We have compiled a video explanation and demonstration of our project.
+We have compiled [a video explanation and demonstration](https://drive.google.com/file/d/0B-shhQisMuMZR295VkNsaW1aT2M/view?ts=571e7b45) of our project.
 
 ## Where Are Projects Maintained
 ### XIA
