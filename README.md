@@ -23,6 +23,17 @@ OVS. We will be coding and hacking in the kernel on both virtual machines and ph
 
 By the end of this project, participants will have gained significant experience in computer networking, cloud computing, Linux kernel programming, Linux and virtual machine configuration, etc.
 
+## Scope and Features Of The Project
+
+## Solution Concept
+
+## Acceptance criteria
+
+## Release Planning
+
+## Project Video
+We have compiled a video explanation and demonstration of our project.
+
 ## Where Are Projects Maintained
 ### XIA
 The [eXpressive Internet Architecture (XIA)](https://github.com/AltraMayor/XIA-for-Linux/wiki) is an experimental network architecture aimed at allowing applications and users to more accurately express their intent. Linux XIA is a native implementation of XIA in the Linux kernel. The project website is [here](https://github.com/AltraMayor/XIA-for-Linux/wiki).
@@ -48,7 +59,7 @@ sudo make
 sudo make install
 ```
 For more detailed installation, please refer to the [Linux XIA wiki](https://github.com/AltraMayor/XIA-for-Linux/wiki/How-to-install).
-### OVS Kernel Space Install
+### OVS Kernel Datapath Install
 ```bash
 cd ~
 sudo rmmod openvswitch
