@@ -24,6 +24,20 @@ OVS. We will be coding and hacking in the kernel on both virtual machines and ph
 
 By the end of this project, participants will have gained significant experience in computer networking, cloud computing, Linux kernel programming, Linux and virtual machine configuration, etc.
 
+## Where Are Projects Maintained
+### XIA
+The eXpressive Internet Architecture (XIA) is an experimental network architecture aimed at allowing applications and users to more accurately express their intent. Linux XIA is a native implementation of XIA in the Linux kernel. The project website is here: https://github.com/AltraMayor/XIA-for-Linux
+
+### Open vSwitch
+Open vSwitch is a virtual multilayer network switch, it has two important components: (1) ovs-vswitchd, a userspace daemon that is essentially the same from one operating system and operating environment to another. (2) datapath kernel module, is usually written specially for the host operating system for performance.
+
+As we extensively modified the OVS project in both user-space and kernel datapath, the OVS user-space project is maintained here: https://github.com/cjdoucette/ovs, the OVS kernel datapath is maintained here: https://github.com/BU-NU-CLOUD-SP16/Building-a-Network-Marketplace-with-XIA/tree/master/openvswitch
+
+### Extended net-echo Application
+net-echo application implements a simple server (eserv) and client (ecli), where the client sends a message and the server simply echoes it back to the client. 
+
+In the extended version, we adapt net-echo to enforce some price constraint within some time bound, i.e., only allow 5 echo messages to use the more expensive link within a minute. Any echo messages beyond those 5 would have to use the cheaper link until some time expires. The extended net-echo application is maintained here: https://github.com/mengxiang0811/net-echo
+
 ## Installation and Deployment
 
 ### XIA Install
@@ -34,7 +48,7 @@ cd XIA-for-Linux
 sudo make
 sudo make install
 ```
-For more detailed installation, please refer to the Linux XIA wiki here https://github.com/AltraMayor/XIA-for-Linux/wiki/How-to-install.
+For more detailed installation, please refer to the Linux XIA wiki here: https://github.com/AltraMayor/XIA-for-Linux/wiki/How-to-install.
 ### OVS Kernel Space Install
 ```bash
 cd ~
