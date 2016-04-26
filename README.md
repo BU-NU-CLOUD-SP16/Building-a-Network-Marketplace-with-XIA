@@ -149,17 +149,6 @@ git clone https://github.com/cjdoucette/ovs.git
 cd ovs
 sudo make
 sudo make install
-
-```
-### OVS Setup
-```bash
-cd ~
-sudo modprobe openvswitch
-sudo ovsdb-server -v --remote=punix:/usr/local/var/run/openvswitch/db.sock --remote=db:Open_vSwitch,Open_vSwitch,manager_options  --pidfile --detach --log-file
-sudo ovs-vsctl --no-wait init
-sudo ovs-vswitchd --pidfile --detach
-sudo modprobe xia_ppal_hid
-sudo modprobe xia_ppal_xdp
 ```
 
 ### Extended Net-echo Application Install
@@ -177,3 +166,125 @@ For the installation of Mininet, please refer to its [official website](http://m
 
 ### Wireshark-XIA Install
 [Wireshark](https://www.wireshark.org/) is a network protocol analyzer that allows users to inspect packet data. It provides a GUI through which users can view conveniently-formatted packet information broken down by protocol. Users can view XIP packets using the [Wireshark with XIA support](https://github.com/AltraMayor/XIA-for-Linux/wiki/Debugging-the-Linux-kernel#Wireshark_with_XIA_support).
+
+## Instructions on Running Demos
+
+### OVS Setup
+On booting the VM, you will always need to get OVS up and running first.
+
+```bash
+cd ~
+sudo modprobe openvswitch
+sudo ovsdb-server -v --remote=punix:/usr/local/var/run/openvswitch/db.sock --remote=db:Open_vSwitch,Open_vSwitch,manager_options  --pidfile --detach --log-file
+sudo ovs-vsctl --no-wait init
+sudo ovs-vswitchd --pidfile --detach
+sudo modprobe xia_ppal_hid
+sudo modprobe xia_ppal_xdp
+```
+
+### Demos
+
+#### Running Wireshark to capture XIA packets
+If you would like to observe what happens to packets when we try to send them between two machines in the network. You can open a terminal (1) and start wireshark from the command line:
+
+```dash
+$ sudo wireshark
+```
+
+When it opens, double-click on Loopback: lo. This will make wireshark start capturing (and displaying) all packets that are flowing through the VM. To capture only the XIA packets that we're interested in, type "xip" into the display filter near the top of the wireshark screen.
+
+#### Running Mininet to create network topology
+To create a network using mininet, open a new terminal (2), and input the following command:
+```dash
+$ sudo mn
+```
+This creates a really simple network with one switch connected to two hosts:
+
+h1 <-----> s1 <-----> h2
+
+Mininet is actually capable of creating some really complex and interesting networks. For the final demo with extended net-echo application, you can create the network topology by running:
+
+```dash
+$ sudo python 3s2h.py
+```
+
+This will create a network topology with three switches connected to two hosts:
+
+```dash
+h1 h1-eth0:s1-eth1
+h2 h2-eth0:s2-eth2 h2-eth1:s3-eth2
+```
+
+#### Running ovs-ofctl to manage flow rules
+
+From here, we can see what kind of rules are installed on the switch connecting these two hosts. In a third terminal (beside the one running wireshark and the one running mininet), do this:
+```dash
+$ sudo ovs-ofctl dump-flows s1
+```
+
+Besides, you can add a rule to switch 1 that says to drop any packet coming in on port 1 (from host 1):
+
+```dash
+$ sudo ovs-ofctl add-flow s1 in_port=1,actions=drop
+```
+
+For the final demo, you can run the shell script named "edge_command.sh" to add rules for XIA packets.
+
+#### Running net-echo application
+
+Finally, we can try to send XIA packets through the mininet network. In order to do this, we'll first need to see how to generate XIA packets.
+
+XIA comes in a series of kernel modules. Each kernel module represents an XIA principal. We're going to use two principals: the HID principal to allow XIA packets to be routed to a different host, and the XDP principal to allow packets to be delivered to sockets for applications. (XDP is XIA's version of the UDP protocol).
+
+Open a terminal on the VM and add the modules this way:
+
+```dash
+$ sudo modprobe xia_ppal_hid
+$ sudo modprobe xia_ppal_xdp
+```
+
+You can check that the modules were loaded by running:
+```dash
+$ dmesg
+```
+This displays the kernel ring buffer, which shows the user important information coming from the kernel.
+
+Since all of the mininet hosts share the same kernel and filesystem as the host VM that we're using, by loading these modules on the host VM, they are automatically loaded on every mininet host.
+
+We have already generated HIDs for both of these hosts (HID_1 for host h1, and HID_2 for host h2). If you would like to generate new HIDs for these hosts, you can run the following command:
+```dash
+mininet> h1 xip hid new hid_h1   // create a new HID for h1
+mininet> h2 xip hid new hid_h2   // create a new HID for h2
+```
+All you need to do is assign these already-generated HIDs to the hosts. This is kind of like assigning an IP address to a machine. In the mininet prompt, issue these commands:
+
+```dash
+mininet> h1 xip hid add hid_h1   // assign it to host h1
+mininet> h2 xip hid add hid_h2   // assign it to host h2
+```
+
+You can check that each host was assigned an HID by running:
+
+```dash
+mininet> h1 xip hid showaddrs
+mininet> h2 xip hid showaddrs
+```
+
+When you add HIDs to machines on the same network, the machines run a protocol called NWP to find each other and communicate. So, at this point, h1 and h2 will actually have figured out they are neighbors. At h1, you can list its neighbors, and you should see information about h2:
+
+```dash
+mininet> h1 xip hid showneighs
+```
+
+To send an XIP packet from h1 to h2, we need to use a new application called net-echo. You need to run the server on h2 with commands:
+
+```dash
+mininet> h2 eserv datagram xip server.txt &
+```
+
+Then you can run the client on h1:
+
+```dash
+mininet> h1 ecli datagram xip client.txt server.txt
+```
+The client will remain open, waiting for you to input text. So type "hello" and press enter. The message should be echoed back!
