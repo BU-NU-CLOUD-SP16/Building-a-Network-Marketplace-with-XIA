@@ -64,6 +64,7 @@ This figure shows the MOC-XIA architecture, in which all the hosts, routers, swi
 
 ## Acceptance criteria
 Minimum acceptance criteria is a working implementation of XIA on OVS.
+
 Stretch goals are:
 * Develop new functionality for XIA to build a network marketplace.
 * Build an application that utilizes XIA on OVS, and demonstrate its advantages.
