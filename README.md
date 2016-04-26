@@ -270,6 +270,19 @@ mininet> h1 xip hid showaddrs
 mininet> h2 xip hid showaddrs
 ```
 
+Finally, you need to replace the HID XID in client.txt by the new "hid_h1", and the HID XID in server.txt by the new "hid_h2". The following is the example DAG addresses in our demo:
+
+```dash
+@client.txt
+
+ hid-14f57b16cc126f75eed7ce9055c9668fade23121-1:                                 
+ xdp-2093723472747047808047502873423749070988-0
+
+@server.txt
+hid-82e0476015683b23aa2c6ca1947d407e6241294b-1:
+xdp-2093723472747047808047502873423749070987-0
+```
+
 When you add HIDs to machines on the same network, the machines run a protocol called NWP to find each other and communicate. So, at this point, h1 and h2 will actually have figured out they are neighbors. At h1, you can list its neighbors, and you should see information about h2:
 
 ```dash
