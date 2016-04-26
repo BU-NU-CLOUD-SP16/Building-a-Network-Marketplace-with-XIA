@@ -273,12 +273,12 @@ mininet> h2 xip hid showaddrs
 Finally, you need to replace the HID XID in client.txt by the new "hid_h1", and the HID XID in server.txt by the new "hid_h2". The following is the example DAG addresses in our demo:
 
 ```dash
-@client.txt
+@client.txt with HID_1
 
  hid-14f57b16cc126f75eed7ce9055c9668fade23121-1:                                 
  xdp-2093723472747047808047502873423749070988-0
 
-@server.txt
+@server.txt with HID_2
 hid-82e0476015683b23aa2c6ca1947d407e6241294b-1:
 xdp-2093723472747047808047502873423749070987-0
 ```
